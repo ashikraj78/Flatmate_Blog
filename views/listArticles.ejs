@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <% if(user) { %>
+        <h3><%= "Welcome "+user.name%></h3>
+        <a href="/users/logout">logout</a>
+    <%} else {%>
+        <a href="/">login/ register</a>
+    <% } %>
+    <h2>list of articles</h2>
+    <% if(user){%>
+        <a href="/articles/new"> Add</a>
+    <% } %>
+    <% articles.forEach(article=>{ %>
+        <a href="/articles/<%= article.id %>">
+            <h3><%= article.title %></h3>
+        </a>
+        <h5><%= article.description %></h5>
+        <p><%= article.author.name %></p>
+        <p><%= article.updatedAt %></p>
+        <% if(user) { %>
+            <% if(user.id == article.author.id){%>
+                <a href="/articles/<%= article.id %>/delete">delete</a>
+                <a href="/articles/<%= article.id %>/update">update</a>
+            <% } %>
+        <%}%>
+    <% }) %>
+</body>
+</html>

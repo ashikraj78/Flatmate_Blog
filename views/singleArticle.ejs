@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <% if(user) { %>
+        <h3><%= "Welcome "+user.name%></h3>
+        <a href="/users/logout">logout</a>
+    <%} else {%>
+        <a href="/">login/ register</a>
+    <% } %>
+    <h2><%= article.title %></h2>   
+    <h4><%= article.description %></h4>
+    <p><%= article.author.name %></p>
+    <p><%= article.updatedAt %></p>
+    <% if(user) { %>
+        <% if(user.id == article.author.id){%>
+            <a href="/articles/<%= article.id %>/delete">delete</a>
+            <a href="/articles/<%= article.id %>/update">update</a>
+        <% } %>
+    <%}%>
+    <form action="/articles/<%= article.id %>/comments" method="POST" >
+        <input type="text" name="content" placeholder="Add Comment">
+        <input type="submit" value="Add Comment">
+    </form>
+
+    <% article.comments.forEach(comment =>{ %>
+        <p><%= comment.content %> </p>
+        <p><%= comment.author.name %></p>
+        <a href="/comments/<%= comment._id %>/edit">edit</a>
+        <a href="/comments/<%= comment._id %>/delete">delete</a>
+     <% }) %>
+
+    
+</body>
+</html>
