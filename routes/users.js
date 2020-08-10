@@ -9,11 +9,19 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/register', (req, res, next)=>{
-  res.render('register')
+  res.render('register',{ message: req.flash('Error')})
 });
 
 
 router.post('/register', (req,res,next)=>{
+  var{email, password} = req.body;
+  if(password.trim()=== ""){
+    req.flash('Error', 'Password required'); 
+      return res.redirect('/users/register')
+
+  }
+
+
   User.create(req.body, (err, createdUser)=>{
     if(err) return next(err)
     res.redirect('/users/login');
@@ -22,7 +30,7 @@ router.post('/register', (req,res,next)=>{
 
 router.get('/login', (req,res,err)=>{
 
-  res.render('loginForm',{ message: req.flash('Error') });
+  res.render('loginForm',{ message: req.flash('Error')});
 })
 
 
@@ -33,6 +41,7 @@ router.post('/login', (req,res,next)=>{
     req.flash('Error', 'Email & Password required'); 
       return res.redirect('/users/login')
   }
+ 
 
   User.findOne({email},(err, user)=>{
     // condition 1
@@ -44,7 +53,7 @@ router.post('/login', (req,res,next)=>{
       return res.redirect('/users/login')
     }
     // condition 3 - verify the password
-    if(!user.verifyPassword(password)){
+    if(!user.verifyPassword(password)){ 
       req.flash('Error', 'Password wrong')
       return res.redirect('/users/login');
     }

@@ -6,6 +6,9 @@ var logger = require('morgan');
 var mongoose = require('mongoose')
 var session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
+var passport = require('passport');
+// dotenv configuration
+require('dotenv').config()
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -17,6 +20,8 @@ var app = express();
 
 var flash = require('connect-flash');
 var auth = require('./middleware/auth')
+
+require('./modules/passport')
 
 // database connection
 mongoose.connect('mongodb://localhost:27017/login_user',{ useNewUrlParser: true ,useUnifiedTopology: true },(err)=>{
@@ -33,11 +38,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(session({
-  secret:'khahiuhuiahldfuaglisdu',
+  secret:process.env.SECRET,
   resave: false,
   saveUninitialized:false,
   store: new MongoStore({ mongooseConnection: mongoose.connection })
 }))
+app.use(passport.initialize())
+app.use(passport.session())
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(flash());
 app.use(auth.userInfo);

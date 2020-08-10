@@ -4,36 +4,60 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="/stylesheets/style.css">
+
 </head>
-<body>
-    <% if(user) { %>
-        <h3><%= "Welcome "+user.name%></h3>
-        <a href="/users/logout">logout</a>
-    <%} else {%>
-        <a href="/">login/ register</a>
-    <% } %>
-    <h2><%= article.title %></h2>   
-    <h4><%= article.description %></h4>
-    <p><%= article.author.name %></p>
-    <p><%= article.updatedAt %></p>
-    <% if(user) { %>
-        <% if(user.id == article.author.id){%>
-            <a href="/articles/<%= article.id %>/delete">delete</a>
-            <a href="/articles/<%= article.id %>/update">update</a>
+<body class="container2">
+    <div class="navbar">
+        <% if(user) { %>
+            <h3><%= "Welcome "+user.name%></h3>
+            <a href="/users/logout">logout</a>
+        <%} else {%>
+            <a href="/">login/ register</a>
         <% } %>
-    <%}%>
-    <form action="/articles/<%= article.id %>/comments" method="POST" >
-        <input type="text" name="content" placeholder="Add Comment">
-        <input type="submit" value="Add Comment">
-    </form>
+    </div>
+    <h1><%= article.title %></h1>   
+    <p>By : <%= article.author.name %></p>
+    <a href="/articles/<%= article.id %>/follow">Follow</a>
+    <p><%= article.description %></p>
+    <p><%= article.updatedAt %></p>
+    <div class="likebar">
+        <% if(user) { %>
+            <% if(user.id == article.author.id){%>
+                <a class="update" href="/articles/<%= article.id %>/delete">delete</a>
+                <a  class="update" href="/articles/<%= article.id %>/update">update</a>
+            <% } %>
+        <%}%>
+    
+        <a href="/articles/<%= article.id %>/likes">Likes</a>
+        <span><%= article.likes %></span>
+    </div>
+
+    <% if(user){ %>
+        <form action="/articles/<%= article.id %>/comments" method="POST" >
+            <input type="text" name="content" placeholder="Add Comment">
+            <input type="submit" value="Add Comment">
+        </form>
+    <% } %>
+    
 
     <% article.comments.forEach(comment =>{ %>
-        <p><%= comment.content %> </p>
-        <p><%= comment.author.name %></p>
-        <a href="/comments/<%= comment._id %>/edit">edit</a>
-        <a href="/comments/<%= comment._id %>/delete">delete</a>
+        <div class="commentlist">
+            <p><%= comment.content %> </p>
+            <p class="commentauthor"><%= comment.author.name %></p>
+            <% if(user.id === comment.author.id){ %>
+                <div>
+                    <a href="/comments/<%= comment._id %>/edit">edit</a>
+                    <a href="/comments/<%= comment._id %>/delete">delete</a>
+                </div>
+            <% } %>
+            <% if(user.id === article.author.id){ %>
+                <div>
+                    <a href="/comments/<%= comment._id %>/delete">delete</a>
+                </div>
+            <% } %>
+        </div>
      <% }) %>
-
     
 </body>
 </html>

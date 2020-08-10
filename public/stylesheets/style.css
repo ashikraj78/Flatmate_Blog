@@ -31,10 +31,10 @@ h1 {
   width: 100%;
   font-family: "Roboto", sans-serif;
   font-weight: 900;
-  font-size: 24px;
+  font-size: 20px;
   text-transform: uppercase;
   letter-spacing: 4px;
-  margin: 10px auto;
+  margin: 5px auto;
   color: #525252;
 }
 label {
@@ -86,7 +86,7 @@ label {
 #btn {
   cursor: pointer;
   display: block;
-  margin: 1px auto 30px ;
+  margin: 1px auto 10px ;
   color: #525252;
   font-size: 1rem;
   font-weight: 900;
@@ -156,4 +156,73 @@ label {
 }
 h5{
   margin: 10px;
+}
+
+
+/* list article */
+
+.container{
+  max-width: 1150px;
+  margin: 25rem auto;
+}
+
+.navbar{
+  display: flex;
+  justify-content: center;
+  border-bottom: 2px solid black;
+}
+
+.navbar h3{
+  margin: 0 55rem 2rem 0;
+}
+
+.listarticle{
+  border-bottom: 1px solid rgb(0, 0, 0);
+}
+
+.listarticle .articledescription{
+  color: rgb(88, 88, 88);
+  font-size: .9rem;
+}
+.addarticle a{
+  text-decoration: none;
+  font-size: 2rem;
+}
+.addarticle{
+  border: 1px solid black;
+  padding: .5rem 2rem;
+  border-radius: 10px;
+  background: white;
+}
+/* single article */
+.container2{
+  max-width: 1150px;
+  margin: 8rem auto;
+}
+
+.container2 h1{
+  font-size: 1.8rem;
+  margin-top: 3rem;
+}
+.likebar{
+  display: flex;
+}
+.likebar .update{
+  padding: 0 2.5rem;
+  
+}
+.container2 form{
+  text-align: center;
+}
+.commentlist{
+  display: flex;
+  margin: 2rem;
+}
+.commentlist p{
+  margin: 0 2rem;
+}
+.commentauthor{
+  margin-left: 2rem;
+  padding: 1px 6px;
+  border: 1px solid grey;
 }

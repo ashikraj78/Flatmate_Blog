@@ -1,10 +1,14 @@
 var User = require("../model/User");
 
-
 exports.verifyUserLogin = (req,res,next)=>{
-    if(req.session && req.session.userId){
+    var userId = req.session && req.session.userId;
+    var userPassportId = req.session && req.session.passport &&req.session.passport.user;
+
+    if(userId){
         next();
-    }else{
+    }else if(userPassportId){
+        next();
+    } else{
         req.flash('Error', 'unauthenticated' )
         return res.redirect('/');
     }
@@ -12,17 +16,24 @@ exports.verifyUserLogin = (req,res,next)=>{
 
 exports.userInfo = (req,res,next)=>{
     var userId = req.session && req.session.userId;
+    var userPassportId = req.session && req.session.passport &&req.session.passport.user;
     if(userId){
         User.findById(userId,"-password",(err,user)=>{
             req.user = user;
             res.locals.user = user;
             next();
         })
+    }else if(userPassportId){
+        User.findById(userPassportId, (err, user)=>{
+            res.locals.user = user;
+            next();
+        }) 
     } else{
         req.user = null;
         res.locals.user = null ; 
         next();
     }
-
 }
+
+
 

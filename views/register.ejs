@@ -15,6 +15,7 @@
     </form> -->
 
     <form action="/users/register" method="POST">
+      
       <h1>Register</h1>
       <label for="name"> Name</label>
       <input type="text" name="name" id="name" />
@@ -23,6 +24,13 @@
       <label for="password"> Password</label>
       <input type="password" name="password" id="password" />
       <input type="submit" value="Register" id="login" />
+
+      <% if (message.length > 0) { %>
+        <div class="error">*<%= message %></div>
+    <% } %>
     </form>
+    <a  class="join"   href="/auth/github">
+        <button id="btn">GITHUB</button>
+      </a>
 </body>
 </html>

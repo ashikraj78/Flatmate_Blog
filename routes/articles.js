@@ -10,7 +10,7 @@ router.get('/new',auth.verifyUserLogin, (req,res)=>{
 
 router.get('/',(req,res)=>{
     Article.find().populate('author','name email').exec((err, articles)=>{
-        res.render('listArticles',{articles, message: req.flash('Error')})
+        res.render('listArticles',{articles, message: req.flash('Error'), user: req.user});
     })
 })
 router.post('/',(req,res,next)=>{
@@ -79,6 +79,42 @@ router.post('/:articleId/update', (req,res,next)=>{
     })
 })
 
+//like 
+router.get('/:articleId/likes', function(req, res, next) {
+    var articleId = req.params.articleId;
+    Article.findById(articleId, (err, article) =>{
+        if(err) return next(err);
+        if(article.likesUser.includes(req.user.id)){
+            article.likes = article.likes - 1;
+            article.likesUser = article.likesUser.pull(req.user.id);
+        }else{
+            article.likes = article.likes + 1;
+            article.likesUser = article.likesUser.push(req.user.id);
+        }
+        Article.findByIdAndUpdate(articleId, article, (err, updatedArticle) =>{
+            if(err) return next(err);
+            res.redirect(`/articles/${article.id}`);
+        });
+    });
+});
+
+// follow
+router.get('/:articleId/follow', function(req, res, next) {
+    var articleId = req.params.articleId;
+    Article.findById(articleId, (err, article) =>{
+        if(err) return next(err);
+        if(article.followUser.includes(req.user.id)){
+            article.followUser = article.followUser.pull(req.user.id);
+        }else{
+            article.followUser = article.followUser.push(req.user.id);
+        }
+        Article.findByIdAndUpdate(articleId, article, (err, updatedArticle) =>{
+            if(err) return next(err);
+            res.redirect(`/articles/${article.id}`);
+        });
+    });
+});
+
 // comment create
 router.post('/:articleId/comments',(req,res,next)=>{
     var articleId = req.params.articleId;
@@ -91,6 +127,4 @@ router.post('/:articleId/comments',(req,res,next)=>{
       })
     })
   })
-
-
 module.exports = router;
